@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 	<head>
 		<title>各職業等級提升能力值計算器</title>
