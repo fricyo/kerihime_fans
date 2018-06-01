@@ -1,37 +1,287 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>各職業等級提升能力值計算器</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	
+	<body onload="chrList(0)">
+		<script>
+			var Chr = new Array();
+			Chr[0] = ["劍士", "弓箭手", "槍兵", "魔法使", "狙擊手", "侍", "槍手", "執行者", "野生兒", "武道家", "演奏家", "忍者", "大盾", "超能力者", "仕事人", "空賊", "機械士", "飛行士", "陰陽師", "鬥士", "道化師", "吸血鬼", "甜點師", "怪盜", "惡魔使", "賭徒", "人造人", "演員", "親衛隊", "王國戰隊"];
+			Chr[1] = ["騎士", "獵人", "龍騎士", "占星術師", "司令官", "劍豪", "武器商人", "審判者", "天空人", "超人", "宇宙船長", "超級機器人", "家元", "狂戰士", "馬戲團長", "夜星", "美食家", "網路英雄", "應援番長"];
+			
 
-You can use the [editor on GitHub](https://github.com/fricyo/kerihime_fans/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+			
+			function chrList(index){
+				document.getElementById("SelectHero").length=0;
+				for(var i = 0; i < Chr[index].length; i++){
+					document.getElementById("SelectHero").options[i] = new Option(Chr[index][i]);
+				}
+			}
+			
+			
+			function calculateValue(){
+				
+				
+				ATK = 10;
+				HP = 10;
+				b = new Array(ATK, HP);
+				olv = document.getElementById("heroLv").value;
+				
+				g1 = new Array("劍士", "侍", "武道家", "空賊", "道化師", "吸血鬼", "甜點師", "怪盜", "賭徒", "演員", "親衛隊", "王國戰隊", "騎士", "劍豪", "宇宙船長", "馬戲團長", "夜星", "美食家", "應援番長");
+				g2 = new Array("弓箭手", "魔法使", "槍手", "執行者", "忍者", "飛行士", "陰陽師", "獵人", "占星術師", "武器商人", "審判者", "家元");
+				g3 = new Array("狙擊手", "超能力者", "仕事人", "機械士", "鬥士", "惡魔使", "人造人", "司令官", "超人", "超級機器人", "狂戰士", "網路英雄");
+				g4 = new Array("槍兵", "野生兒", "龍騎士", "天空人");
+				g5 = new Array("演奏家", "大盾");
+				selectH = document.getElementById("SelectHero").value;
+				
+				if( olv > 1 ){
+					if(g1.indexOf(selectH) != -1){
+						b = lvBonus1(olv);}
+					else if(g2.indexOf(selectH) != -1){
+						b = lvBonus2(olv);}
+					else if(g3.indexOf(selectH) != -1){
+						b = lvBonus3(olv);}
+					else if(g4.indexOf(selectH) != -1){
+						b = lvBonus4(olv);}
+					else if(g5.indexOf(selectH) != -1){
+						b = lvBonus5(olv);}
+					
+					ATK = b[0];
+					HP = b[1];
+				}
+				
+				if(document.getElementById("Awoken").checked == true){
+					ATK = ATK * 3;
+					HP = HP * 3;
+				}
+				
+				document.getElementById("atk").value = ATK;
+				document.getElementById("hp").value = HP;
+			}
+			
+			
+			function lvBonus1(olv){
+			//劍士,侍,武道家,空賊,道化師,吸血鬼,甜點師,怪盜,賭徒,演員,親衛隊,王國戰隊
 
-### Markdown
+				lv = 1;
+				lb_ATK = 10;
+				lb_HP = 10;
+				d_ATK = 5;
+				d_HP = 11;
+				
+				for(var lv = 2; lv <= olv; lv++){
+					if(((lv - 1) % 10) == 0){
+						d_ATK = d_ATK + 2;
+						d_HP = d_HP + 2;
+					}
+					else if(((lv - 1) % 5) == 0){
+						d_ATK = d_ATK + 1;
+						d_HP = d_HP + 1;
+					}
+					
+					lb_ATK = lb_ATK + d_ATK;
+					lb_HP = lb_HP + d_HP;
+					
+				}
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+				return Array(lb_ATK, lb_HP);
+			}
+			
+			function lvBonus2(olv){
+			//弓箭手,魔法使,槍手,執行者,忍者,飛行士,陰陽師
 
-```markdown
-Syntax highlighted code block
+				lv = 1;
+				lb_ATK = 10;
+				lb_HP = 10;
+				d_ATK = 5;
+				d_HP = 9;
+				i_ATK = 0; //計算ATK規律
+				i_HP = 1; //計算HP下個錨點規律。0,1:第4個提升值變化，2:第3個提升值變化
+				k_HP = 16; //增加值變3的錨點
+				
+				for(var lv = 2; lv <= olv; lv++){					
+					if(((lv - 1) % 5) == 0){
+						//ATK計算
+						if(i_ATK == 2){
+							d_ATK = d_ATK + 1;}
+						else{
+							d_ATK = d_ATK + 2;}
+						
+						
+						if(lv % 100 == 81){
+							i_ATK = i_ATK + 2;}
+						else{
+							i_ATK = i_ATK + 1;}
+						
+						
+						if(i_ATK > 2){i_ATK = 0;}
+						
+						//HP計算
+						if(lv == k_HP){
+							d_HP = d_HP + 2;
 
-# Header 1
-## Header 2
-### Header 3
+							if((lv % 200) == 31){
+								i_HP = i_HP + 2;}
+							else{
+								i_HP = i_HP + 1;}
+							
+							if(i_HP > 2){i_HP = i_HP - 3;}
+							
+							if(i_HP == 2){
+								k_HP = k_HP + 3 * 5;}
+							else{
+								k_HP = k_HP + 4 * 5;}
+						}
+						else{
+							d_HP = d_HP + 1;}
+					}
+					
+					lb_ATK = lb_ATK + d_ATK
+					lb_HP = lb_HP + d_HP
+				}
+				
+				return Array(lb_ATK, lb_HP)
+			}
 
-- Bulleted
-- List
+			function lvBonus3(olv){
+			//狙擊手,超能力者,仕事人,機械士,鬥士,惡魔使,人造人
+				lv = 1;
+				lb_ATK = 10;
+				lb_HP = 10;
+				d_ATK = 6;
+				d_HP = 7;
+					
+				for(var lv = 2; lv <= olv; lv++){        
+					if((lv % 25) == 11){
+						d_ATK = d_ATK + 1;}
+					else if(((lv - 1) % 5) == 0){
+						d_ATK = d_ATK + 2;}
+							
+					if((lv % 100) == 16){
+						d_HP = d_HP + 2;}
+					else if(((lv - 1) % 5) == 0){
+						d_HP = d_HP + 1;}       
+					
+					lb_ATK = lb_ATK + d_ATK;
+					lb_HP = lb_HP + d_HP;
+					
+				}
+				
+				return Array(lb_ATK, lb_HP);
+			}
+			
+			function lvBonus4(olv){
+			//槍兵,野生兒
 
-1. Numbered
-2. List
+				lv = 1;
+				lb_ATK = 10;
+				lb_HP = 10;
+				d_ATK = 5;
+				d_HP = 12;
+				i_ATK = 0; //計算ATK規律
+				i_HP = 1; //計算HP下個錨點規律。0,1:第4個提升值變化，2:第3個提升值變化
+				k_HP = 16; //增加值變3的錨點
+				
+				for(var lv = 2; lv <= olv; lv++){
+					
+					if(((lv - 1) % 5) == 0){
+						//ATK計算
+						if(i_ATK == 2){
+							d_ATK = d_ATK + 2;}
+						else{
+							d_ATK = d_ATK + 1;}
+						
+						if(lv % 100 == 96){
+							i_ATK = i_ATK + 2;}
+						else{
+							i_ATK = i_ATK + 1;}
 
-**Bold** and _Italic_ and `Code` text
+						if(i_ATK > 2){i_ATK = 0;}
+						
+						//HP計算
+						if(lv == k_HP){
+							d_HP = d_HP + 1;
 
-[Link](url) and ![Image](src)
-```
+							if((lv % 200) == 86){
+								i_HP = i_HP + 2;}
+							else{
+								i_HP = i_HP + 1;}
+							
+							if(i_HP > 2){ i_HP = i_HP - 3;}
+							
+							if(i_HP == 2){
+								k_HP = k_HP + 3 * 5;}
+							else{
+								k_HP = k_HP + 4 * 5;}
+						}
+						else{
+							d_HP = d_HP + 2;}
+					}
+					lb_ATK = lb_ATK + d_ATK;
+					lb_HP = lb_HP + d_HP;
+				}
+				return Array(lb_ATK, lb_HP);
+			}
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+			function lvBonus5(olv){
+			//演奏家,大盾
+				lv = 1;
+				lb_ATK = 10;
+				lb_HP = 10;
+				d_ATK = 4;
+				d_HP = 14;
+				
+				for(var lv = 2; lv <= olv; lv++){
+					if((lv % 25) == 16){
+						d_ATK = d_ATK + 2;
+						d_HP = d_HP + 2;}
+					else if((lv % 100) == 21){
+						d_HP = d_HP + 1;
+						d_ATK = d_ATK + 1;}
+					else if(((lv - 1) % 5) == 0){
+						d_ATK = d_ATK + 1;
+						d_HP = d_HP + 2;}
+					
+					lb_ATK = lb_ATK + d_ATK;
+					lb_HP = lb_HP + d_HP;
+				}
+				return Array(lb_ATK, lb_HP);
+			}
+	
+		</script>
+		
+		<form>
+			<div id="main">
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/fricyo/kerihime_fans/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+				<br>
+				<div style="float:left; margin-left: 5px;">
+					<input type="radio" name="heroType" id="Normal" checked="true" onclick="chrList(0)">通常職
+					<input type="radio" name="heroType" id="Awoken" onclick="chrList(1)">覺醒職
+					<br>
+					<select id="SelectHero" style="width: 145px;"></select>
+				</div>
+				<br>
+				<div style="float:left; margin-left: 15px;">
+					Lv.
+					<input type="number" id="heroLv" value="1" style="text-align: right; width: 90px" onblur="if(this.value==''){this.value=1};" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+				</div>
+				<br><br>
+				<div style="clear:both;">
+					<button type="button" style="text-align:center; width: 270px; margin-left: 10px;" onclick="calculateValue()" >計　算</button>
+				</div>
+				<br>
+				<div style="clear:both; margin-left: 5px;">
+					<text style="display: inline-block; text-align: center; width: 35px; margin-bottom: 5px"><b>ATK</b></text>&nbsp;
+					<input type="text" id="atk" readonly value="10" style="text-align: right; width: 220px"/>
+					<br>
+					<text style="display: inline-block; text-align: center; width: 35px; margin-bottom: 5px"><b>HP</b></text>&nbsp;
+					<input type="text" id="hp" readonly value="10" style="text-align: right; width: 220px"/>
+				</div>
+				
+			</div>
+		</form>
+	</body>
+</html>
