@@ -5,10 +5,11 @@
 		<meta charset="utf-8">
  
 		<style type="text/css">
-			form {text-align:center}
-			#SelectHero {width: 15%}
+			body {text-align:center;}
+			form {background-color: red;}
+			#SelectHero {width: 50%;}
 			#heroLv {text-align: right;
-					width: 10%}
+				width: 10%;}
 		</style>
 	</head>
 	
@@ -19,12 +20,19 @@
 		
 		<form>
 		|<br/>
+		<div style="background-color: yellow; width: 70%; margin:0px auto;">
 			<input type="radio" name="heroType" id="Normal" checked="checked" onclick="chrList(0)">通常職
 			<input type="radio" name="heroType" id="Awoken" onclick="chrList(1)">覺醒職<br/>
 			<select id="SelectHero"></select>
 			<br/>Lv.
-			<input type="number" id="heroLv" value="1"" onblur="if(this.value==''){this.value=1};" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+			<input type="number" id="heroLv" value="1"" onblur="if(this.value==''){this.value=1};" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" /><br/>
 			
+			<text/>裝備
+			<text/>等級
+			<text/>職業
+			<text/>+值
+			<text/>MAX
+		</div>
 		</form>
 	</body>
 </html>
