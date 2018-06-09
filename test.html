@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>各職業等級提升能力值計算器</title>
+		<meta charset="utf-8">
+ 
+		<style type="text/css">
+			form {text-align:center}
+			#SelectHero {width: 15%}
+			#heroLv {text-align: right;
+					width: 10%}
+		</style>
+	</head>
+	
+	<body>
+		<script>
+
+		</script>
+		
+		<form>
+		|<br/>
+			<input type="radio" name="heroType" id="Normal" checked="checked" onclick="chrList(0)">通常職
+			<input type="radio" name="heroType" id="Awoken" onclick="chrList(1)">覺醒職<br/>
+			<select id="SelectHero"></select>
+			<br/>Lv.
+			<input type="number" id="heroLv" value="1"" onblur="if(this.value==''){this.value=1};" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+			
+		</form>
+	</body>
+</html>
